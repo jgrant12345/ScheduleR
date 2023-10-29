@@ -1,0 +1,17 @@
+.ToDoItemContainer{
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    height: 80px;
+    width: 800px;
+    box-shadow: 5px 5px 10px 3px rgb(165, 164, 164);
+}
+
+.userMessage{
+    margin-left: 25px;
+}
+
+.secondItem{
+    margin-left: auto;
+    margin-right: 15px;
+}
