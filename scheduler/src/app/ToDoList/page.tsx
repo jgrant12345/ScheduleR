@@ -2,16 +2,21 @@
 import SwipeableTemporaryDrawer from "@/Components/Drawer/SwipeableTemporaryDrawer";
 import ToDoItem from "@/Components/ToDoList/ToDoItem";
 import { todo } from "node:test";
-import { useState } from "react";
+import { createContext, useContext, useState } from 'react';
+import { SidebarContext } from "../providers";
+
 
 interface todoItem {
   toDoText: string;
 }
 
+const ToDoItemsContext = createContext({value : 42});
+
 export default function TodoList() {
   const [toDoText, setToDoText] = useState<string>("");
-  const [toDoItems, settoDoItems] = useState<todoItem[]>([{ toDoText: "222" }]);
+  const [toDoItems, settoDoItems] = useState<todoItem[]>([]);
 
+  const myContext = useContext(SidebarContext);
   const onChange = (e: any) => {
     setToDoText(e.target.value);
   };
@@ -24,8 +29,15 @@ export default function TodoList() {
     setToDoText("");
   };
 
+  const deleteItem = (selectedElementIndex : Number ) => {
+    settoDoItems(toDoItems.filter((element, index) => {
+      return index !== selectedElementIndex
+    }))
+  }
+
   return (
     <>
+    <ToDoItemsContext.Provider value = {{value: 46}}>
       <form>
         <input
           value={toDoText}
@@ -34,10 +46,11 @@ export default function TodoList() {
         <button type="submit" onClick={addItem}>
           Add Item
         </button>
-      </form>
+      </form>  
       {toDoItems.map((element, index) => {
-        return <ToDoItem userText={element.toDoText}></ToDoItem>;
+        return <ToDoItem key={index} deleteItem={deleteItem} userText={element.toDoText} index={index}></ToDoItem>;
       })}
+      </ToDoItemsContext.Provider>
     </>
   );
 }
